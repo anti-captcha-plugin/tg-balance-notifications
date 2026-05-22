@@ -31,8 +31,8 @@ for var in BALANCE_THRESHOLD TELEGRAM_BOT_TOKEN TELEGRAM_CHAT_ID; do
     fi
 done
 
-if ! awk -v t="$BALANCE_THRESHOLD" 'BEGIN{exit !(t+0==t && t>=0)}' 2>/dev/null; then
-    echo "error: BALANCE_THRESHOLD is not a valid non-negative number: '$BALANCE_THRESHOLD'" >&2
+if ! awk -v t="$BALANCE_THRESHOLD" 'BEGIN{exit !(t+0==t && t>0)}' 2>/dev/null; then
+    echo "error: BALANCE_THRESHOLD is not a valid positive number: '$BALANCE_THRESHOLD'" >&2
     exit 1
 fi
 
