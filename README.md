@@ -13,7 +13,34 @@ One instance of this repo serves one client. A client may own one or several Ant
 - `bash` 4+
 - `curl`
 - `jq`
-- A Telegram bot (create via [@BotFather](https://t.me/BotFather)) added to the destination chat with permission to post
+
+## Setting up the Telegram bot
+
+### 1. Create the bot
+
+1. Open Telegram, start a chat with [@BotFather](https://t.me/BotFather).
+2. Send `/newbot`.
+3. Choose a display name (any), then a username ending in `bot` (e.g. `myteam_balance_bot`).
+4. BotFather replies with the token — a string like `8037205173:AAGAn...` — this is `TELEGRAM_BOT_TOKEN`. Keep it secret.
+
+### 2. Pick the destination chat
+
+You can send alerts either to your personal DM with the bot or to a group. Pick one and follow the matching sub-section below to obtain `TELEGRAM_CHAT_ID`.
+
+#### Personal DM
+
+1. In Telegram, open the bot's profile (search by its `@username`) and press **Start** (or just send any message).
+2. In a browser, open: `https://api.telegram.org/bot<TOKEN>/getUpdates` (replace `<TOKEN>`).
+3. Find the field `"chat":{"id":NUMBER,"type":"private", ...}` — that `NUMBER` (a positive integer) is your `TELEGRAM_CHAT_ID`.
+
+#### Group chat
+
+1. Open the destination group → group settings → **Add Members** → search the bot by `@username` → add it. The bot needs no admin rights — just membership.
+2. In the group, send a message that explicitly addresses the bot, e.g. `/start@your_botname`. (By default, Telegram bots only see messages that mention them; this one line is enough to make the chat visible in `getUpdates`.)
+3. In a browser, open: `https://api.telegram.org/bot<TOKEN>/getUpdates`
+4. Find `"chat":{"id":-100NUMBER..., "type":"supergroup", "title":"..."}` (or `"type":"group"` with a smaller negative ID). That negative number — **with the minus sign** — is your `TELEGRAM_CHAT_ID`.
+
+If `getUpdates` returns `{"ok":true,"result":[]}`, the bot hasn't received anything yet — send another `/start@your_botname` in the chat and refresh the page.
 
 ## Setup
 
